@@ -49,16 +49,11 @@ def professor(professor_id):
 
 	pscore = {} #maps id to (n, average of similarities)
 	for i in source_reviews_idx:
-		gram = linear_kernel(reviews_tfidf[i], reviews_tfidf)
-		# for j, review in enumerate(reviews):
-		# 	for pid in review["professor_ids"]:
-		# 		try:
-		# 			z = pscore[pid]
-		# 		except KeyError:
-		# 			z = (0, 0.0)
-		# 		z = (z[0]+1, (gram.flatten()[j] - z[1])/(z[0]+1))
-		# 		pscore[pid] = z
-	top10 = sorted(pscore.items(), key=lambda x: x[1][1], reverse=True)[:10]
+		gram = linear_kernel(reviews_tfidf[i], reviews_tfidf).flatten()
+
+	top10_idx= gram.argsort()[:-10:-1]
+	print top10_idx
+	print gram[top10_idx]
 
 	profs = [db.professors.find_one({"_id" : professor_id})]
 	for profid, score in top10:
