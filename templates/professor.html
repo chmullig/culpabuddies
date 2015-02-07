@@ -1,0 +1,23 @@
+<!doctype html>
+<title>CULPA Buddy</title>
+
+
+{% if prof %}
+  <h1><a href="http://culpa.info/professors/{{prof["_id"]}}">{{ prof["first_name"] }} {{prof["last_name"] }}</a>'s Buddies!</h1>
+{% endif %}
+
+I only want to see their buddies in this department: <form action="{{ request.path }}">
+	<select name="dept">
+		<option value="">--none--</option>
+		{% for dept in departments %}
+		<option value={{ dept["_id"] }}>{{ dept["nickname"] }}</option>
+		{% endfor %}
+	</select>
+	<input type=submit>
+</form>
+
+<ul>
+{% for match in matches %}
+    <li>{{ match[0]|round(3) }} <a href="http://culpa.info/professors/{{ match[1]["_id"] }}">{{ match[1]["first_name"]}} {{ match[1]["last_name"] }}</a></li>
+{% endfor %}
+</ul>
